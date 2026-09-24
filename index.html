@@ -8,7 +8,6 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#DEFF00">
 <meta name="apple-mobile-web-app-title" content="Registro NC">
 <meta name="application-name" content="Registro de Não Conformidade">
@@ -233,6 +232,9 @@ select{appearance:none; -webkit-appearance:none;
 .ghost-btn{background:var(--surface); border:1px solid var(--border-strong); color:var(--text); font-weight:700; font-size:13.5px; padding:11px 18px; border-radius:999px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;}
 .ghost-btn:hover{border-color:var(--lime-deep); color:var(--lime-deep);}
 .ghost-btn[disabled]{opacity:.5; cursor:progress;}
+.danger-btn{background:var(--required); color:#fff; border:none; font-weight:700; font-size:13px; padding:9px 16px; border-radius:999px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;}
+.danger-btn:hover{background:#A82A3F;}
+.danger-btn[disabled]{opacity:.55; cursor:progress;}
 .link-btn{background:none; border:none; color:var(--lime-deep); font-weight:700; font-size:12.5px; cursor:pointer; padding:0; text-decoration:underline; text-underline-offset:2px;}
 .action-status{font-size:12.5px; color:var(--text-faint); margin-top:12px; min-height:18px;}
 .mailto-box{margin-top:14px; padding:12px 14px; border:1px dashed var(--border-strong); border-radius:10px; font-size:12.5px; color:var(--text-muted); display:none;}
@@ -352,9 +354,15 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
   </nav>
 
   <div id="formSections" hidden>
-  <div class="type-badge" id="typeBadge">
-    <span id="typeBadgeText">Não Conformidade</span>
-    <button type="button" class="link-btn" id="btnTrocarTipo">trocar</button>
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+    <div class="type-badge" id="typeBadge" style="margin-bottom:0;">
+      <span id="typeBadgeText">Não Conformidade</span>
+      <button type="button" class="link-btn" id="btnTrocarTipo">trocar</button>
+    </div>
+    <button type="button" class="danger-btn" id="btnLimparForm">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+      Limpar formulário
+    </button>
   </div>
 
   <form id="ncForm" novalidate>
@@ -393,35 +401,33 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
         <div><div class="q-head"><span class="q-num">2.4</span><span class="q-title">Data do recebimento</span></div><input type="date" id="f-dataRecebimento"></div>
       </div></div>
       <div class="q"><div class="row2">
-        <div><div class="q-head"><span class="q-num">2.5</span><span class="q-title">Quantidade recebida</span></div><div class="row2" style="gap:8px;"><input type="number" id="f-qtdRecebida" placeholder="0" step="0.01" min="0"><select id="f-qtdRecebidaUn"><option value="kg">kg</option><option value="t">toneladas</option></select></div></div>
-        <div><div class="q-head"><span class="q-num">2.6</span><span class="q-title">Peso total da carga</span></div><div class="row2" style="gap:8px;"><input type="number" id="f-pesoTotalCarga" placeholder="0" step="0.01" min="0"><select id="f-pesoTotalCargaUn"><option value="kg">kg</option><option value="t">toneladas</option></select></div></div>
+        <div><div class="q-head"><span class="q-num">2.5</span><span class="q-title">Peso total da carga</span></div><div class="row2" style="gap:8px;"><input type="number" id="f-pesoTotalCarga" placeholder="0" step="0.01" min="0"><select id="f-pesoTotalCargaUn"><option value="kg">kg</option><option value="t">toneladas</option></select></div></div>
+        <div><div class="q-head"><span class="q-num">2.6</span><span class="q-title">Forma de recebimento</span></div><input type="text" id="f-formaReceb" placeholder="Ex.: Caçamba aberta, compactador de plástico, caminhão baú, contêiner..."></div>
       </div></div>
-      <div class="q"><div class="q-head"><span class="q-num">2.7</span><span class="q-title">Forma de recebimento</span></div><input type="text" id="f-formaReceb" placeholder="Ex.: Caçamba aberta, compactador de plástico, caminhão baú, contêiner..."></div>
-      <div class="q">
-        <div class="q-head"><span class="q-num">2.8</span><span class="q-title">Tipo(s) de resíduo <span class="req">*</span></span></div>
-        <div class="q-desc">Um bloco por tipo de material encontrado no recebimento — adicione quantos forem necessários.</div>
-        <div id="residuoContainer"></div>
-        <div class="add-row"><button type="button" class="add-btn" id="btnAddResiduo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg> Adicionar outro resíduo</button></div>
-        <div class="residuo-err" id="residuoErr">Adicione ao menos um tipo de resíduo.</div>
-      </div>
       <div class="q" style="padding-bottom:2px;"><div class="row2">
-        <div><div class="q-head"><span class="q-num">2.9</span><span class="q-title">Tipo da não conformidade</span></div><input type="text" id="f-defeito" placeholder="Ex.: Material misturado, umidade, contaminação"></div>
-        <div><div class="q-head"><span class="q-num">2.10</span><span class="q-title">Severidade</span></div><div class="chips">
+        <div><div class="q-head"><span class="q-num">2.7</span><span class="q-title">Tipo da não conformidade</span></div><input type="text" id="f-defeito" placeholder="Ex.: Material misturado, umidade, contaminação"></div>
+        <div><div class="q-head"><span class="q-num">2.8</span><span class="q-title">Severidade</span></div><div class="chips">
           <label class="chip crit-baixa"><input type="radio" name="severidade" value="Baixa"><span>Baixa</span></label>
           <label class="chip crit-media"><input type="radio" name="severidade" value="Média"><span>Média</span></label>
           <label class="chip crit-alta"><input type="radio" name="severidade" value="Alta"><span>Alta</span></label>
           <label class="chip crit-critica"><input type="radio" name="severidade" value="Crítica"><span>Crítica</span></label>
         </div></div>
       </div></div>
+      <div class="q">
+        <div class="q-head"><span class="q-num">2.9</span><span class="q-title">Tipo(s) de resíduo <span class="req">*</span></span></div>
+        <div class="q-desc">Um bloco por tipo de material encontrado no recebimento — cada um com seu peso e sua própria descrição. Adicione quantos forem necessários.</div>
+        <div id="residuoContainer"></div>
+        <div class="add-row"><button type="button" class="add-btn" id="btnAddResiduo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg> Adicionar outro resíduo</button></div>
+        <div class="residuo-err" id="residuoErr">Adicione ao menos um tipo de resíduo.</div>
+      </div>
     </div>
   </div>
 
   <div id="sec-nc">
-    <div class="card section-title"><div><h2 id="lbl-secNcTitle">Descrição da não conformidade</h2><p id="lbl-secNcDesc">O que foi encontrado e a ação necessária.</p></div><span class="idx">3 de 5</span></div>
+    <div class="card section-title"><div><h2 id="lbl-secNcTitle">Não conformidade</h2><p id="lbl-secNcDesc">Reincidência e ação necessária — a descrição de cada resíduo fica na seção Fornecedor.</p></div><span class="idx">3 de 5</span></div>
     <div class="card">
-      <div class="q"><div class="q-head"><span class="q-num">3.1</span><span class="q-title" id="lbl-descricao">Descrição da não conformidade <span class="req">*</span></span></div><textarea id="f-descricao" placeholder="Descreva o que foi identificado no recebimento" data-req="1"></textarea><div class="err-msg">Campo obrigatório</div></div>
-      <div class="q"><div class="q-head"><span class="q-num">3.2</span><span class="q-title">Problema reincidente?</span></div><div class="seg" role="radiogroup"><label><input type="radio" name="reincidente" value="Sim"><span>Sim</span></label><label><input type="radio" name="reincidente" value="Não"><span>Não</span></label></div></div>
-      <div class="q" style="padding-bottom:2px;"><div class="q-head"><span class="q-num">3.3</span><span class="q-title">Ação necessária / orientação ao cliente</span></div><textarea id="f-acao" placeholder="Ex.: reforçamos a importância de garantir a correta segregação dos resíduos na origem..."></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">3.1</span><span class="q-title">Problema reincidente?</span></div><div class="seg" role="radiogroup"><label><input type="radio" name="reincidente" value="Sim"><span>Sim</span></label><label><input type="radio" name="reincidente" value="Não"><span>Não</span></label></div></div>
+      <div class="q" style="padding-bottom:2px;"><div class="q-head"><span class="q-num">3.2</span><span class="q-title">Ação necessária / orientação ao cliente</span></div><textarea id="f-acao" placeholder="Ex.: reforçamos a importância de garantir a correta segregação dos resíduos na origem..."></textarea></div>
     </div>
   </div>
 
@@ -429,7 +435,7 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
     <div class="card section-title"><div><h2>Registro fotográfico</h2><p>Fotos do material / ocorrência — aparecem no relatório e no PDF.</p></div><span class="idx">4 de 5</span></div>
     <div class="card">
       <div class="q" style="padding-bottom:2px;">
-        <label class="upload-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg> Adicionar fotos<span class="photo-count" id="photo-count" hidden></span><input type="file" accept="image/*" multiple id="f-fotos"></label>
+        <label class="upload-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg> Adicionar fotos<span class="photo-count" id="photo-count" hidden></span><input type="file" accept="image/*" multiple capture="environment" id="f-fotos"></label>
         <div class="thumbs" id="thumbs"></div>
       </div>
     </div>
@@ -481,10 +487,6 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
           Baixar apenas o PDF
         </button>
-        <button type="button" class="ghost-btn" id="btnLimparForm">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
-          Limpar formulário
-        </button>
         <button type="button" class="preview-toggle" id="btnPreview">Ver pré-visualização do relatório</button>
       </div>
       <div class="action-status" id="actionStatus" aria-live="polite"></div>
@@ -535,6 +537,14 @@ function onlyDigits(s){ return String(s||'').replace(/\D/g,''); }
 /* ---------- estado do tipo de registro ---------- */
 var S = { photos: [], tipo: null, destinatarios: [], registros: [], selectedDest: null };
 
+function updateResiduoDescLabels(){
+  var isNC = S.tipo === 'Não Conformidade';
+  var lbl = (isNC ? 'Descrição da não conformidade' : 'Descrição da ocorrência') + ' neste resíduo';
+  $$('#residuoContainer [data-lbl-residuo-desc]').forEach(function(el){ el.innerHTML = lbl + ' <span class="req">*</span>'; });
+  $$('#residuoContainer [data-k="descricao"]').forEach(function(el){
+    el.placeholder = isNC ? 'Descreva o que foi identificado neste tipo de resíduo' : 'Descreva o que aconteceu com este tipo de resíduo';
+  });
+}
 function updateTipoUI(){
   var isNC = S.tipo === 'Não Conformidade';
   $('#typeBadgeText').textContent = S.tipo || '';
@@ -542,35 +552,46 @@ function updateTipoUI(){
   var otrReq = $('#lbl-otr'), otrInput = $('#f-otr');
   otrReq.innerHTML = 'Nº OTR / MTR' + (isNC ? ' <span class="req">*</span>' : ' <span class="hint" style="display:inline;">(opcional)</span>');
   if(isNC){ otrInput.setAttribute('data-req','1'); } else { otrInput.removeAttribute('data-req'); otrInput.classList.remove('invalid'); }
-  $('#lbl-secNcTitle').textContent = isNC ? 'Descrição da não conformidade' : 'Descrição da ocorrência';
-  $('#lbl-secNcDesc').textContent = isNC ? 'O que foi encontrado e a ação necessária.' : 'O que aconteceu e a ação necessária.';
-  $('#lbl-descricao').innerHTML = (isNC ? 'Descrição da não conformidade' : 'Descrição da ocorrência') + ' <span class="req">*</span>';
-  $('#f-descricao').placeholder = isNC ? 'Descreva o que foi identificado no recebimento' : 'Descreva o que aconteceu';
+  $('#lbl-secNcTitle').textContent = isNC ? 'Não conformidade' : 'Ocorrência';
+  $('#lbl-secNcDesc').textContent = 'Reincidência e ação necessária — a descrição de cada resíduo fica na seção Fornecedor.';
+  updateResiduoDescLabels();
 }
 /* ---------- numeração automática e sequencial ---------- */
+function localRegistrosGet(){
+  try{ return JSON.parse(localStorage.getItem('ncFormRegistrosLocal') || '[]'); }catch(e){ return []; }
+}
+function localRegistrosAdd(tipo){
+  try{
+    var arr = localRegistrosGet();
+    arr.push({ tipo: tipo, ano: new Date().getFullYear() });
+    if(arr.length > 5000) arr = arr.slice(arr.length - 5000);
+    localStorage.setItem('ncFormRegistrosLocal', JSON.stringify(arr));
+  }catch(e){}
+}
+function localRegistrosCount(tipo, ano){
+  return localRegistrosGet().filter(function(r){ return r.tipo === tipo && String(r.ano) === String(ano); }).length;
+}
 async function gerarNumeroSequencial(tipo){
   var input = $('#f-notificacao'), hint = $('#numeroHint');
   input.readOnly = true; input.value = ''; input.placeholder = 'Gerando…';
   hint.textContent = 'Gerando número sequencial…';
   try{ await capsReady; }catch(e){}
-  if(!dbCap){
-    input.readOnly = false; input.value = ''; input.placeholder = 'Numeração automática indisponível — preencha manualmente';
-    hint.textContent = 'Numeração automática indisponível nesta visualização — preencha manualmente.';
-    return;
+  var ano = new Date().getFullYear();
+  if(dbCap){
+    try{
+      var snap = await dbCap.collection('registros').where('tipo', '==', tipo).limit(1000).get();
+      var count = snap.docs.filter(function(d){ var doc = d.data(); return String((doc && doc.createdAt) || '').slice(0,4) === String(ano); }).length;
+      input.value = String(count + 1).padStart(3, '0') + '/' + ano;
+      hint.textContent = 'Numeração automática e sequencial.';
+      agendarSalvar();
+      return;
+    }catch(e){ console.error(e); }
   }
-  try{
-    var ano = new Date().getFullYear();
-    var snap = await dbCap.collection('registros').where('tipo', '==', tipo).limit(1000).get();
-    var count = snap.docs.filter(function(d){ var doc = d.data(); return String((doc && doc.createdAt) || '').slice(0,4) === String(ano); }).length;
-    var numero = String(count + 1).padStart(3, '0') + '/' + ano;
-    input.value = numero;
-    hint.textContent = 'Numeração automática e sequencial.';
-    agendarSalvar();
-  }catch(e){
-    console.error(e);
-    input.readOnly = false; input.placeholder = 'Não foi possível gerar — preencha manualmente';
-    hint.textContent = 'Não foi possível gerar o número automaticamente — preencha manualmente.';
-  }
+  var count2 = localRegistrosCount(tipo, ano);
+  input.readOnly = false;
+  input.value = String(count2 + 1).padStart(3, '0') + '/' + ano;
+  hint.textContent = 'Número sugerido automaticamente neste dispositivo — ajuste se precisar bater com o controle da equipe.';
+  agendarSalvar();
 }
 $$('.type-option').forEach(function(btn){
   btn.addEventListener('click', async function(){
@@ -579,7 +600,7 @@ $$('.type-option').forEach(function(btn){
     $('#typeGate').hidden = true;
     $('#formSections').hidden = false;
     $('#anchorNav').hidden = false;
-    window.scrollTo({ top: $('#formSections').getBoundingClientRect().top + window.scrollY - 90, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    scrollToFormSections();
     gerarNumeroSequencial(S.tipo);
     agendarSalvar();
   });
@@ -597,6 +618,13 @@ function reduced(){ return matchMedia('(prefers-reduced-motion: reduce)').matche
 function setTopbarH(){ var tb = $('.topbar'); if(tb) document.documentElement.style.setProperty('--topbar-h', tb.offsetHeight + 'px'); }
 setTopbarH();
 window.addEventListener('resize', setTopbarH);
+function scrollToFormSections(){
+  var topbarH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar-h')) || 84;
+  var nav = $('#anchorNav');
+  var anchorH = (nav && !nav.hidden) ? nav.offsetHeight : 0;
+  var offset = topbarH + anchorH + 14;
+  window.scrollTo({ top: $('#formSections').getBoundingClientRect().top + window.scrollY - offset, behavior: reduced() ? 'auto' : 'smooth' });
+}
 $$('.anchor-nav button').forEach(function(b){
   b.addEventListener('click', function(){
     var el = document.getElementById(b.getAttribute('data-target'));
@@ -665,10 +693,12 @@ function addResiduo(presetId){
     '<div class="q"><div class="q-head"><span class="q-title">Categoria / tipo de resíduo</span></div><div class="chips">' +
       ['Resíduo','Reciclável','Produto','Outra'].map(function(o){ return '<label class="chip"><input type="radio" name="'+id+'-categoria" data-k="categoria" value="'+o+'"><span>'+o+'</span></label>'; }).join('') +
     '</div></div>' +
-    '<div class="q" style="padding-bottom:2px;"><div class="q-head"><span class="q-title">Peso deste resíduo</span></div><div class="row2" style="gap:8px;max-width:320px;">' +
+    '<div class="q"><div class="q-head"><span class="q-title">Peso deste resíduo</span></div><div class="row2" style="gap:8px;max-width:320px;">' +
       '<input type="number" data-k="peso" placeholder="0" step="0.01" min="0"><select data-k="pesoUn"><option value="kg">kg</option><option value="t">toneladas</option></select>' +
-    '</div></div>';
+    '</div></div>' +
+    '<div class="q" style="padding-bottom:2px;"><div class="q-head"><span class="q-title" data-lbl-residuo-desc>Descrição da não conformidade neste resíduo <span class="req">*</span></span></div><textarea data-k="descricao" placeholder="Descreva o que foi identificado neste tipo de resíduo"></textarea><div class="err-msg">Campo obrigatório</div></div>';
   c.appendChild(el);
+  updateResiduoDescLabels();
   return el;
 }
 function renumberResiduos(){
@@ -680,9 +710,10 @@ function residuosList(){
     return {
       categoria: radio ? radio.value : '',
       peso: ($('input[data-k="peso"]', b) || {}).value || '',
-      pesoUn: ($('select[data-k="pesoUn"]', b) || {}).value || 'kg'
+      pesoUn: ($('select[data-k="pesoUn"]', b) || {}).value || 'kg',
+      descricao: ($('[data-k="descricao"]', b) || {}).value || ''
     };
-  }).filter(function(r){ return r.categoria || r.peso; });
+  }).filter(function(r){ return r.categoria || r.peso || r.descricao; });
 }
 $('#btnAddResiduo').addEventListener('click', function(){ var el = addResiduo(); this.blur(); el.scrollIntoView({behavior:'smooth', block:'nearest'}); });
 document.addEventListener('click', function(e){
@@ -837,6 +868,11 @@ function residuosTxt(r){
   if(!lst.length) return '';
   return lst.map(function(it){ return it.categoria + (it.peso ? ' (' + it.peso + ' ' + (it.pesoUn||'kg') + ')' : ''); }).join('; ');
 }
+function residuosDescTxt(r){
+  var lst = Array.isArray(r.residuos) ? r.residuos : [];
+  if(!lst.length) return '';
+  return lst.map(function(it){ return it.categoria + ': ' + (it.descricao || '(sem descrição)'); }).join(' | ');
+}
 function residuosPesoTotal(r){
   var lst = Array.isArray(r.residuos) ? r.residuos : [];
   var total = 0;
@@ -856,11 +892,11 @@ $('#btnExportarPlanilha').addEventListener('click', async function(){
         'Data de abertura': fmtDateBR(r.dataAbertura), 'Data de ocorrência/recebimento': fmtDateBR(r.dataOcorrencia),
         'Tipo': r.tipo || '', 'Nº': r.notificacao || '', 'Emissor': r.emissor || '', 'Gestor': r.gestor || '', 'Base/Planta': r.base || '',
         'Fornecedor/Cliente': r.fornecedor || '', 'CNPJ': r.cnpj || '', 'OTR/MTR': r.otr || '', 'Data do recebimento': fmtDateBR(r.dataRecebimento),
-        'Forma de recebimento': r.formaReceb || '', 'Quantidade recebida': r.qtdRecebida || '', 'Unidade (quantidade recebida)': r.qtdRecebidaUn || '',
+        'Forma de recebimento': r.formaReceb || '',
         'Peso total da carga': r.pesoTotalCarga || '', 'Unidade (peso total da carga)': r.pesoTotalCargaUn || '',
         'Tipo(s) de resíduo': residuosTxt(r), 'Peso somado dos resíduos (kg/t conforme unidade)': residuosPesoTotal(r),
         'Tipo da não conformidade': r.defeito || '', 'Severidade': r.severidade || '', 'Reincidente': r.reincidente || '',
-        'Descrição': r.descricao || '', 'Ação necessária': r.acao || '',
+        'Descrição por resíduo': residuosDescTxt(r), 'Ação necessária': r.acao || '',
         'Houve recusa do material': r.recusa || '', 'Data da disposição': fmtDateBR(r.dataDisposicao), 'Ação corretiva/finalização': r.acaoCorretiva || '',
         'Destinatário': r.destinatarioNome || '', 'E-mail destinatário': r.destinatarioEmail || '',
         'Registrado em': r.createdAt || ''
@@ -962,7 +998,16 @@ function validate(){
   if(!residuos.length){
     residuoErr.classList.add('show'); ok = false;
     if(!firstBad) firstBad = $('#residuoContainer');
-  } else { residuoErr.classList.remove('show'); }
+  } else {
+    residuoErr.classList.remove('show');
+    $$('#residuoContainer > [data-id]').forEach(function(b){
+      var radio = $$('input[data-k="categoria"]', b).filter(function(i){ return i.checked; })[0];
+      if(!radio) return;
+      var descEl = $('[data-k="descricao"]', b);
+      var descVal = descEl ? descEl.value.trim() : '';
+      if(!descVal){ markInvalid(descEl); ok = false; if(!firstBad) firstBad = descEl; }
+    });
+  }
   var dest = resolveDestinatario();
   var destSel = $('#f-destinatario');
   var emailOk = dest.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dest.email);
@@ -983,11 +1028,10 @@ function buildPayload(){
     emissor: v('#f-emissor'), gestor: v('#f-gestor'), base: v('#f-base'),
     fornecedor: v('#f-fornecedor'), cnpj: v('#f-cnpj'), otr: v('#f-otr'),
     dataRecebimento: v('#f-dataRecebimento'), formaReceb: v('#f-formaReceb'),
-    qtdRecebida: v('#f-qtdRecebida'), qtdRecebidaUn: $('#f-qtdRecebidaUn').value,
     pesoTotalCarga: v('#f-pesoTotalCarga'), pesoTotalCargaUn: $('#f-pesoTotalCargaUn').value,
     residuos: residuosList().filter(function(r){ return r.categoria; }),
     defeito: v('#f-defeito'), severidade: radio('severidade'),
-    descricao: v('#f-descricao'), reincidente: radio('reincidente'), acao: v('#f-acao'),
+    reincidente: radio('reincidente'), acao: v('#f-acao'),
     fotos: S.photos.slice(),
     recusa: radio('recusa'), dataDisposicao: v('#f-dataDisposicao'), acaoCorretiva: v('#f-acaoCorretiva'),
     destinatarioNome: dest.nome, destinatarioEmail: dest.email
@@ -1007,9 +1051,15 @@ function cellInner(label, value){
 function barRow(label){
   return '<tr><td colspan="2" style="border:1px solid '+LINE+';background:'+GRAY+';padding:5px 10px;font-size:11.5px;font-weight:800;color:'+INK+';text-transform:uppercase;letter-spacing:.02em;">'+esc(label)+'</td></tr>';
 }
+function residuoBlockHtml(r, i){
+  var titulo = (i+1) + '. ' + r.categoria + (r.peso ? ' — ' + r.peso + ' ' + (r.pesoUn||'kg') : '');
+  return '<tr><td colspan="2" style="border:1px solid '+LINE+';padding:6px 10px 0;">' +
+      '<div style="font-size:10px;color:'+FAINT+';font-weight:700;text-transform:uppercase;letter-spacing:.02em;">'+esc(titulo)+'</div>' +
+    '</td></tr>' +
+    '<tr><td colspan="2" style="border:1px solid '+LINE+';padding:4px 10px 10px;font-size:13px;color:'+INK+';white-space:pre-wrap;">'+ (r.descricao?nl(r.descricao):'&nbsp;') +'</td></tr>';
+}
 function renderReportHtml(p){
   var isNC = p.tipo === 'Não Conformidade';
-  var qtd = p.qtdRecebida ? (p.qtdRecebida + ' ' + p.qtdRecebidaUn) : '';
   var forma = p.formaReceb;
   var titulo = isNC ? 'RELATÓRIO DE RECEBIMENTO DE MATERIAL NÃO CONFORME' : 'REGISTRO DE OCORRÊNCIA';
   var codeBox = isNC ? 'FOR_WAS_ITU_OP_05<br>RG-SGI-014-01 · Rev. 00' : 'Registro interno<br>Sistema Midas';
@@ -1029,15 +1079,12 @@ function renderReportHtml(p){
   out.push(barRow('Descrição do produto'));
   out.push('<tr>' + cell('Fornecedor / Cliente', p.fornecedor + (p.cnpj?(' ['+p.cnpj+']'):'')) + cell('Gestor', p.gestor) + '</tr>');
   out.push('<tr>' + cell('OTR / MTR', p.otr) + cell('Data do recebimento', fmtDateBR(p.dataRecebimento)) + '</tr>');
-  out.push('<tr>' + cell('Forma de recebimento', forma) + cell('Quant. recebida', qtd) + '</tr>');
-  out.push('<tr>' + cell('Base / Planta', p.base) + cell('Peso total da carga', p.pesoTotalCarga ? (p.pesoTotalCarga + ' ' + p.pesoTotalCargaUn) : '') + '</tr>');
-  out.push('<tr>' + cell('Tipo da não conformidade', p.defeito) + cell('Severidade', p.severidade) + '</tr>');
-  if(p.residuos && p.residuos.length){
-    out.push('<tr><td colspan="2" style="border:1px solid '+LINE+';padding:6px 10px;">' + cellInner('Tipo(s) de resíduo', p.residuos.map(function(r){ return r.categoria + (r.peso ? ' (' + r.peso + ' ' + (r.pesoUn||'kg') + ')' : ''); }).join('; ')) + '</td></tr>');
-  }
-  out.push(barRow(isNC ? 'Descrição da não conformidade' : 'Descrição da ocorrência'));
+  out.push('<tr>' + cell('Peso total da carga', p.pesoTotalCarga ? (p.pesoTotalCarga + ' ' + p.pesoTotalCargaUn) : '') + cell('Forma de recebimento', forma) + '</tr>');
+  out.push('<tr>' + cell('Base / Planta', p.base) + cell('Tipo da não conformidade', p.defeito) + '</tr>');
+  out.push('<tr><td colspan="2" style="border:1px solid '+LINE+';padding:6px 10px;">' + cellInner('Severidade', p.severidade) + '</td></tr>');
+  out.push(barRow(isNC ? 'Resíduos e descrição da não conformidade' : 'Resíduos e descrição da ocorrência'));
+  (p.residuos||[]).forEach(function(r, i){ out.push(residuoBlockHtml(r, i)); });
   out.push('<tr><td colspan="2" style="border:1px solid '+LINE+';padding:6px 10px;">' + cellInner('Problema reincidente', p.reincidente) + '</td></tr>');
-  out.push('<tr><td colspan="2" style="border:1px solid '+LINE+';padding:8px 10px;font-size:13px;color:'+INK+';white-space:pre-wrap;">'+ (p.descricao?nl(p.descricao):'&nbsp;') +'</td></tr>');
   out.push('<tr><td colspan="2" style="border:1px solid '+LINE+';padding:8px 10px;"><div style="font-size:10px;color:'+FAINT+';font-weight:700;text-transform:uppercase;margin-bottom:2px;">Ação necessária</div><div style="font-size:13px;color:'+INK+';white-space:pre-wrap;">'+ (p.acao?nl(p.acao):'&nbsp;') +'</div></td></tr>');
   out.push(barRow('Disposição / encerramento'));
   out.push('<tr>' + cell('Houve recusa do material', p.recusa) + cell('Data da disposição', fmtDateBR(p.dataDisposicao)) + '</tr>');
@@ -1111,6 +1158,7 @@ async function saveFile(filename, blob){
   }
 }
 async function registrarNoIndicador(payload){
+  localRegistrosAdd(payload.tipo || 'Não Conformidade');
   if(!dbCap) return;
   try{
     var doc = Object.assign({}, payload);
@@ -1151,7 +1199,7 @@ $('#btnLimparForm').addEventListener('click', async function(){
   } finally { restaurando = false; }
   await apagarRascunho();
   if(tipoAtual){ gerarNumeroSequencial(tipoAtual); }
-  window.scrollTo({ top: $('#formSections').getBoundingClientRect().top + window.scrollY - 90, behavior: reduced() ? 'auto' : 'smooth' });
+  scrollToFormSections();
   toast('Formulário limpo. Um novo número foi gerado.');
 });
 
@@ -1173,7 +1221,12 @@ function emailBody(payload, pdfName){
   L.push('Base / Planta: ' + (payload.base || '-'));
   L.push('Data de ocorrência: ' + (fmtDateBR(payload.dataOcorrencia) || '-'));
   L.push('');
-  L.push('Descrição: ' + (payload.descricao || '-'));
+  L.push('Descrição por resíduo:');
+  if(payload.residuos && payload.residuos.length){
+    payload.residuos.forEach(function(r){
+      L.push('- ' + r.categoria + (r.peso ? ' (' + r.peso + ' ' + (r.pesoUn||'kg') + ')' : '') + ': ' + (r.descricao || '(sem descrição)'));
+    });
+  } else { L.push('-'); }
   L.push('');
   L.push('O PDF do relatório (' + pdfName + ') foi baixado nesta mesma ação — anexe-o a este e-mail antes de enviar.');
   L.push('');
