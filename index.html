@@ -8,6 +8,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#DEFF00">
 <meta name="apple-mobile-web-app-title" content="Registro NC">
 <meta name="application-name" content="Registro de Não Conformidade">
@@ -160,6 +161,25 @@ header.intro p{margin:0; color:var(--text-muted); font-size:14.5px; max-width:64
 .scroll-bottom-fab:active{transform:translateY(0);}
 .scroll-bottom-fab[hidden]{display:none;}
 @media (max-width:480px){ .scroll-bottom-fab{right:14px; bottom:16px; width:46px; height:46px;} }
+.clear-fab{
+  position:fixed; right:22px; bottom:88px; z-index:30;
+  width:52px; height:52px; border-radius:50%; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255,255,255,.4) 0%, rgba(255,255,255,.06) 38%, rgba(255,255,255,0) 62%),
+    var(--required);
+  border:1px solid color-mix(in srgb, var(--required) 70%, black 12%);
+  box-shadow:
+    0 10px 30px -12px rgba(20,21,13,.42),
+    inset 0 1px 0 rgba(255,255,255,.4),
+    inset 0 -8px 12px -8px rgba(20,21,13,.24);
+  cursor:pointer; transition:transform .18s ease, box-shadow .18s ease, background .15s ease, opacity .2s ease;
+}
+.clear-fab:hover{transform:translateY(-3px); background:radial-gradient(circle at 30% 22%, rgba(255,255,255,.4) 0%, rgba(255,255,255,.06) 38%, rgba(255,255,255,0) 62%), #A82A3F;}
+.clear-fab:active{transform:translateY(0);}
+.clear-fab[hidden]{display:none;}
+@media (max-width:480px){ .clear-fab{right:14px; bottom:72px; width:46px; height:46px;} }
 .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); box-shadow:var(--shadow); padding:24px 26px; margin-bottom:14px;}
 .card.section-title{background:var(--bar-bg); color:var(--bar-text); padding:18px 26px; display:flex; align-items:baseline; justify-content:space-between; gap:12px; border:none;}
 .card.section-title h2{font-family:var(--font-display); font-size:18px; margin:0; font-weight:800; color:var(--bar-text);}
@@ -222,6 +242,7 @@ select{appearance:none; -webkit-appearance:none;
 .thumb input{border:none!important; border-top:1px solid var(--border)!important; border-radius:0!important; font-size:12px!important; padding:7px 9px!important;}
 .thumb button{border:none; background:var(--surface-muted); color:var(--text-faint); font-size:12px; font-weight:700; padding:6px; cursor:pointer;}
 .thumb button:hover{color:var(--required);}
+.thumb .cap-auto{padding:7px 9px; font-size:11.5px; color:var(--text-muted); border-top:1px solid var(--border); font-weight:600;}
 .photo-count{font-family:var(--font-mono); font-size:11px; color:var(--lime-deep); background:var(--accent-soft); border:1px solid var(--accent-soft-border); padding:2px 8px; border-radius:999px; margin-left:6px;}
 .submit-section{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); box-shadow:var(--shadow); padding:26px;}
 .submit-section .q-title{font-size:17px;}
@@ -232,9 +253,6 @@ select{appearance:none; -webkit-appearance:none;
 .ghost-btn{background:var(--surface); border:1px solid var(--border-strong); color:var(--text); font-weight:700; font-size:13.5px; padding:11px 18px; border-radius:999px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;}
 .ghost-btn:hover{border-color:var(--lime-deep); color:var(--lime-deep);}
 .ghost-btn[disabled]{opacity:.5; cursor:progress;}
-.danger-btn{background:var(--required); color:#fff; border:none; font-weight:700; font-size:13px; padding:9px 16px; border-radius:999px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;}
-.danger-btn:hover{background:#A82A3F;}
-.danger-btn[disabled]{opacity:.55; cursor:progress;}
 .link-btn{background:none; border:none; color:var(--lime-deep); font-weight:700; font-size:12.5px; cursor:pointer; padding:0; text-decoration:underline; text-underline-offset:2px;}
 .action-status{font-size:12.5px; color:var(--text-faint); margin-top:12px; min-height:18px;}
 .mailto-box{margin-top:14px; padding:12px 14px; border:1px dashed var(--border-strong); border-radius:10px; font-size:12.5px; color:var(--text-muted); display:none;}
@@ -304,6 +322,9 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
 .dest-hint{font-size:12px; color:var(--branch); margin-top:8px; font-weight:600;}
 </style>
 
+<button type="button" class="clear-fab" id="btnLimparForm" aria-label="Limpar formulário" title="Limpar formulário" hidden>
+  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+</button>
 <button type="button" class="scroll-bottom-fab" id="scrollBottomBtn" aria-label="Ir para o final da página" hidden>
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
 </button>
@@ -326,7 +347,7 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
         Exportar planilha
       </button>
     </div>
-    <div class="hint" style="margin-top:10px;">A planilha (.xlsx) é o repositório externo do indicador, com todas as informações registradas (pesos, CNPJ, quantidades etc.) — baixe e mantenha-a em uma pasta compartilhada (Sharepoint/Drive) para consulta pela equipe.</div>
+    <div class="hint" style="margin-top:10px;">A planilha (.xlsx) é o repositório externo do indicador, com todas as informações registradas (pesos, CNPJ, quantidades etc.) — baixe e mantenha-a em uma pasta compartilhada (Sharepoint/Drive) para consulta pela equipe. Fora do Claude, a exportação usa o histórico salvo neste dispositivo.</div>
   </section>
 
   <div class="type-gate" id="typeGate">
@@ -348,27 +369,20 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
     <button type="button" data-target="sec-id">Identificação</button>
     <button type="button" data-target="sec-forn">Fornecedor</button>
     <button type="button" data-target="sec-nc">Descrição</button>
-    <button type="button" data-target="sec-fotos">Fotos</button>
     <button type="button" data-target="sec-disp">Disposição</button>
     <button type="button" data-target="sec-envio">Enviar</button>
   </nav>
 
   <div id="formSections" hidden>
-  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
-    <div class="type-badge" id="typeBadge" style="margin-bottom:0;">
-      <span id="typeBadgeText">Não Conformidade</span>
-      <button type="button" class="link-btn" id="btnTrocarTipo">trocar</button>
-    </div>
-    <button type="button" class="danger-btn" id="btnLimparForm">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
-      Limpar formulário
-    </button>
+  <div class="type-badge" id="typeBadge">
+    <span id="typeBadgeText">Não Conformidade</span>
+    <button type="button" class="link-btn" id="btnTrocarTipo">trocar</button>
   </div>
 
   <form id="ncForm" novalidate>
 
   <div id="sec-id">
-    <div class="card section-title"><div><h2>Identificação do registro</h2><p>Cabeçalho do relatório: quem emite, quando e onde.</p></div><span class="idx">1 de 5</span></div>
+    <div class="card section-title"><div><h2>Identificação do registro</h2><p>Cabeçalho do relatório: quem emite, quando e onde.</p></div><span class="idx">1 de 4</span></div>
     <div class="card">
       <div class="q"><div class="row2">
         <div><div class="q-head"><span class="q-num">1.1</span><span class="q-title" id="lbl-notificacao">Nº da Não Conformidade <span class="req">*</span></span></div><input type="text" id="f-notificacao" placeholder="Gerado automaticamente" data-req="1" readonly><div class="hint" id="numeroHint">Numeração automática e sequencial.</div><div class="err-msg">Campo obrigatório</div></div>
@@ -388,7 +402,7 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
   </div>
 
   <div id="sec-forn">
-    <div class="card section-title"><div><h2>Fornecedor / cliente e recebimento</h2><p>Origem da carga e como ela chegou.</p></div><span class="idx">2 de 5</span></div>
+    <div class="card section-title"><div><h2>Fornecedor / cliente e recebimento</h2><p>Origem da carga e como ela chegou.</p></div><span class="idx">2 de 4</span></div>
     <div class="card">
       <div class="q"><div class="row2">
         <div><div class="q-head"><span class="q-num">2.1</span><span class="q-title">Fornecedor / Cliente <span class="req">*</span></span></div><input type="text" id="f-fornecedor" placeholder="Ex.: Volkswagen" list="dl-cliente" data-req="1"><div class="err-msg">Campo obrigatório</div>
@@ -424,25 +438,15 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
   </div>
 
   <div id="sec-nc">
-    <div class="card section-title"><div><h2 id="lbl-secNcTitle">Não conformidade</h2><p id="lbl-secNcDesc">Reincidência e ação necessária — a descrição de cada resíduo fica na seção Fornecedor.</p></div><span class="idx">3 de 5</span></div>
+    <div class="card section-title"><div><h2 id="lbl-secNcTitle">Não conformidade</h2><p id="lbl-secNcDesc">Reincidência e ação necessária — a descrição e as fotos de cada resíduo ficam na seção Fornecedor.</p></div><span class="idx">3 de 4</span></div>
     <div class="card">
       <div class="q"><div class="q-head"><span class="q-num">3.1</span><span class="q-title">Problema reincidente?</span></div><div class="seg" role="radiogroup"><label><input type="radio" name="reincidente" value="Sim"><span>Sim</span></label><label><input type="radio" name="reincidente" value="Não"><span>Não</span></label></div></div>
       <div class="q" style="padding-bottom:2px;"><div class="q-head"><span class="q-num">3.2</span><span class="q-title">Ação necessária / orientação ao cliente</span></div><textarea id="f-acao" placeholder="Ex.: reforçamos a importância de garantir a correta segregação dos resíduos na origem..."></textarea></div>
     </div>
   </div>
 
-  <div id="sec-fotos">
-    <div class="card section-title"><div><h2>Registro fotográfico</h2><p>Fotos do material / ocorrência — aparecem no relatório e no PDF.</p></div><span class="idx">4 de 5</span></div>
-    <div class="card">
-      <div class="q" style="padding-bottom:2px;">
-        <label class="upload-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg> Adicionar fotos<span class="photo-count" id="photo-count" hidden></span><input type="file" accept="image/*" multiple capture="environment" id="f-fotos"></label>
-        <div class="thumbs" id="thumbs"></div>
-      </div>
-    </div>
-  </div>
-
   <div id="sec-disp">
-    <div class="card section-title"><div><h2>Disposição e encerramento</h2><p>O que foi feito com o material e o fechamento do caso.</p></div><span class="idx">5 de 5</span></div>
+    <div class="card section-title"><div><h2>Disposição e encerramento</h2><p>O que foi feito com o material e o fechamento do caso.</p></div><span class="idx">4 de 4</span></div>
     <div class="card">
       <div class="q"><div class="q-head"><span class="q-num">5.1</span><span class="q-title">Houve recusa do material?</span></div><div class="seg" role="radiogroup"><label><input type="radio" name="recusa" value="Sim"><span>Sim</span></label><label><input type="radio" name="recusa" value="Não"><span>Não</span></label><label><input type="radio" name="recusa" value="Em avaliação"><span>Em avaliação</span></label></div></div>
       <div class="q" style="padding-bottom:2px;"><div class="row2">
@@ -479,24 +483,35 @@ footer.note{text-align:center; color:var(--text-faint); font-size:12px; margin-t
       <div class="cond" id="manualEmailWrap"><input type="email" id="f-emailManual" placeholder="nome@ambipar.com"></div>
 
       <div class="action-row">
-        <button type="button" class="submit-btn" id="btnEnviarOutlook">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-          Baixar PDF e abrir e-mail no Outlook
+        <button type="button" class="submit-btn" id="btnFinalizarRegistro">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Finalizar registro
         </button>
-        <button type="button" class="ghost-btn" id="btnBaixarPdf">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
-          Baixar apenas o PDF
-        </button>
-        <button type="button" class="preview-toggle" id="btnPreview">Ver pré-visualização do relatório</button>
       </div>
-      <div class="action-status" id="actionStatus" aria-live="polite"></div>
-      <div class="mailto-box" id="mailtoBox">
-        O Outlook não abriu automaticamente? Copie os dados abaixo e cole em um e-mail novo — o PDF já foi baixado, é só anexar.<br>
-        <strong>Para:</strong> <span id="mb-to"></span><br>
-        <strong>Assunto:</strong> <span id="mb-subject"></span><br>
-        <button type="button" class="ghost-btn" id="btnCopiarEmail" style="margin-top:8px; padding:7px 13px; font-size:12.5px;">Copiar destinatário, assunto e corpo</button>
+      <div class="action-status" id="finalizeStatus" aria-live="polite"></div>
+
+      <div id="exportOptions" hidden>
+        <div class="q-desc" style="margin:12px 0 4px;">Registro finalizado — escolha como exportar:</div>
+        <div class="action-row">
+          <button type="button" class="submit-btn" id="btnEnviarOutlook">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            Baixar PDF e abrir e-mail no Outlook
+          </button>
+          <button type="button" class="ghost-btn" id="btnBaixarPdf">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+            Baixar apenas o PDF
+          </button>
+          <button type="button" class="preview-toggle" id="btnPreview">Ver pré-visualização do relatório</button>
+        </div>
+        <div class="action-status" id="actionStatus" aria-live="polite"></div>
+        <div class="mailto-box" id="mailtoBox">
+          O Outlook não abriu automaticamente? Copie os dados abaixo e cole em um e-mail novo — o PDF já foi baixado, é só anexar.<br>
+          <strong>Para:</strong> <span id="mb-to"></span><br>
+          <strong>Assunto:</strong> <span id="mb-subject"></span><br>
+          <button type="button" class="ghost-btn" id="btnCopiarEmail" style="margin-top:8px; padding:7px 13px; font-size:12.5px;">Copiar destinatário, assunto e corpo</button>
+        </div>
+        <div class="report-frame" id="reportFrame" hidden></div>
       </div>
-      <div class="report-frame" id="reportFrame" hidden></div>
     </div>
   </div>
 
@@ -535,7 +550,7 @@ function onlyDigits(s){ return String(s||'').replace(/\D/g,''); }
 })();
 
 /* ---------- estado do tipo de registro ---------- */
-var S = { photos: [], tipo: null, destinatarios: [], registros: [], selectedDest: null };
+var S = { residuoPhotos: {}, tipo: null, destinatarios: [], registros: [], selectedDest: null };
 
 function updateResiduoDescLabels(){
   var isNC = S.tipo === 'Não Conformidade';
@@ -553,7 +568,7 @@ function updateTipoUI(){
   otrReq.innerHTML = 'Nº OTR / MTR' + (isNC ? ' <span class="req">*</span>' : ' <span class="hint" style="display:inline;">(opcional)</span>');
   if(isNC){ otrInput.setAttribute('data-req','1'); } else { otrInput.removeAttribute('data-req'); otrInput.classList.remove('invalid'); }
   $('#lbl-secNcTitle').textContent = isNC ? 'Não conformidade' : 'Ocorrência';
-  $('#lbl-secNcDesc').textContent = 'Reincidência e ação necessária — a descrição de cada resíduo fica na seção Fornecedor.';
+  $('#lbl-secNcDesc').textContent = 'Reincidência e ação necessária — a descrição e as fotos de cada resíduo ficam na seção Fornecedor.';
   updateResiduoDescLabels();
 }
 /* ---------- numeração automática e sequencial ---------- */
@@ -570,6 +585,18 @@ function localRegistrosAdd(tipo){
 }
 function localRegistrosCount(tipo, ano){
   return localRegistrosGet().filter(function(r){ return r.tipo === tipo && String(r.ano) === String(ano); }).length;
+}
+/* histórico completo local (fallback do indicador quando não há banco compartilhado) */
+function localHistoricoGet(){
+  try{ return JSON.parse(localStorage.getItem('ncFormHistoricoLocal') || '[]'); }catch(e){ return []; }
+}
+function localHistoricoAdd(doc){
+  try{
+    var arr = localHistoricoGet();
+    arr.push(doc);
+    if(arr.length > 300) arr = arr.slice(arr.length - 300);
+    localStorage.setItem('ncFormHistoricoLocal', JSON.stringify(arr));
+  }catch(e){}
 }
 async function gerarNumeroSequencial(tipo){
   var input = $('#f-notificacao'), hint = $('#numeroHint');
@@ -593,22 +620,24 @@ async function gerarNumeroSequencial(tipo){
   hint.textContent = 'Número sugerido automaticamente neste dispositivo — ajuste se precisar bater com o controle da equipe.';
   agendarSalvar();
 }
+function syncFormVisibility(open){
+  $('#typeGate').hidden = open;
+  $('#formSections').hidden = !open;
+  $('#anchorNav').hidden = !open;
+  $('#btnLimparForm').hidden = !open;
+}
 $$('.type-option').forEach(function(btn){
   btn.addEventListener('click', async function(){
     S.tipo = btn.getAttribute('data-tipo');
     updateTipoUI();
-    $('#typeGate').hidden = true;
-    $('#formSections').hidden = false;
-    $('#anchorNav').hidden = false;
+    syncFormVisibility(true);
     scrollToFormSections();
     gerarNumeroSequencial(S.tipo);
     agendarSalvar();
   });
 });
 $('#btnTrocarTipo').addEventListener('click', function(){
-  $('#typeGate').hidden = false;
-  $('#formSections').hidden = true;
-  $('#anchorNav').hidden = true;
+  syncFormVisibility(false);
   $('#typeGate').scrollIntoView({ behavior:'smooth', block:'start' });
   agendarSalvar();
 });
@@ -641,7 +670,7 @@ $$('.anchor-nav button').forEach(function(b){
   }, { passive:true });
 })();
 
-/* ---------- fotos ---------- */
+/* ---------- fotos por resíduo ---------- */
 function desenhar(img, max){
   var w = img.naturalWidth||img.width, h = img.naturalHeight||img.height, r = Math.min(1, max/Math.max(w,h));
   w = Math.round(w*r); h = Math.round(h*r);
@@ -657,29 +686,52 @@ function compress(file){
     img.src = url;
   });
 }
-function renderThumbs(){
-  var box = $('#thumbs');
-  box.innerHTML = S.photos.map(function(p){
-    return '<div class="thumb" data-pid="'+p.id+'"><img src="'+p.dataUrl+'" alt=""><input type="text" value="'+esc(p.caption)+'" placeholder="Legenda da foto" data-cap="'+p.id+'"><button type="button" data-del="'+p.id+'">Remover</button></div>';
-  }).join('');
-  var cnt = $('#photo-count'); cnt.hidden = !S.photos.length; cnt.textContent = S.photos.length ? S.photos.length + (S.photos.length===1?' foto':' fotos') : '';
+function residuoLegenda(blk){
+  var radio = $$('input[data-k="categoria"]', blk).filter(function(i){ return i.checked; })[0];
+  if(radio) return radio.value;
+  var badge = $('[data-badge]', blk);
+  return badge ? badge.textContent : 'Resíduo';
 }
-$('#f-fotos').addEventListener('change', async function(e){
-  var files = Array.prototype.slice.call(e.target.files||[]); e.target.value='';
+function renderResiduoThumbs(blk){
+  var id = blk.getAttribute('data-id');
+  var photos = S.residuoPhotos[id] || [];
+  var legenda = residuoLegenda(blk);
+  var box = $('[data-thumbs]', blk);
+  if(!box) return;
+  box.innerHTML = photos.map(function(p){
+    return '<div class="thumb" data-pid="'+p.id+'"><img src="'+p.dataUrl+'" alt=""><div class="cap-auto">'+esc(legenda)+'</div><button type="button" data-del-residuo-foto="'+p.id+'" data-residuo="'+id+'">Remover</button></div>';
+  }).join('');
+  var cnt = $('[data-photo-count]', blk);
+  if(cnt){ cnt.hidden = !photos.length; cnt.textContent = photos.length ? photos.length + (photos.length===1?' foto':' fotos') : ''; }
+}
+function renderAllResiduoThumbs(){ $$('#residuoContainer > [data-id]').forEach(renderResiduoThumbs); }
+function residuoPhotosPayload(){
+  var out = [];
+  $$('#residuoContainer > [data-id]').forEach(function(blk){
+    var id = blk.getAttribute('data-id'), legenda = residuoLegenda(blk);
+    (S.residuoPhotos[id]||[]).forEach(function(p){ out.push({ id: p.id, dataUrl: p.dataUrl, caption: legenda }); });
+  });
+  return out;
+}
+document.addEventListener('change', async function(e){
+  var input = e.target.closest && e.target.closest('[data-k="fotoInput"]'); if(!input) return;
+  var blk = input.closest('[data-id]'); if(!blk) return;
+  var id = blk.getAttribute('data-id');
+  var files = Array.prototype.slice.call(input.files||[]); input.value = '';
+  if(!S.residuoPhotos[id]) S.residuoPhotos[id] = [];
   for(var i=0;i<files.length;i++){
-    try{ var dataUrl = await compress(files[i]); S.photos.push({ id: uid('p'), dataUrl: dataUrl, caption: '' }); }
+    try{ var dataUrl = await compress(files[i]); S.residuoPhotos[id].push({ id: uid('p'), dataUrl: dataUrl }); }
     catch(err){ toast('Não foi possível ler uma das imagens.'); }
   }
-  renderThumbs();
+  renderResiduoThumbs(blk);
+  agendarSalvar();
 });
 document.addEventListener('click', function(e){
-  var b = e.target.closest('[data-del]'); if(!b) return;
-  var id = b.getAttribute('data-del'); S.photos = S.photos.filter(function(p){ return p.id!==id; }); renderThumbs();
-});
-document.addEventListener('input', function(e){
-  var t = e.target; if(!t.matches('[data-cap]')) return;
-  var id = t.getAttribute('data-cap'), p = S.photos.filter(function(x){ return x.id===id; })[0];
-  if(p) p.caption = t.value;
+  var b = e.target.closest('[data-del-residuo-foto]'); if(!b) return;
+  var resId = b.getAttribute('data-residuo'), photoId = b.getAttribute('data-del-residuo-foto');
+  if(S.residuoPhotos[resId]) S.residuoPhotos[resId] = S.residuoPhotos[resId].filter(function(p){ return p.id !== photoId; });
+  var blk = b.closest('[data-id]'); if(blk) renderResiduoThumbs(blk);
+  agendarSalvar();
 });
 
 /* ---------- tipo(s) de resíduo (bloco repetível) ---------- */
@@ -696,7 +748,11 @@ function addResiduo(presetId){
     '<div class="q"><div class="q-head"><span class="q-title">Peso deste resíduo</span></div><div class="row2" style="gap:8px;max-width:320px;">' +
       '<input type="number" data-k="peso" placeholder="0" step="0.01" min="0"><select data-k="pesoUn"><option value="kg">kg</option><option value="t">toneladas</option></select>' +
     '</div></div>' +
-    '<div class="q" style="padding-bottom:2px;"><div class="q-head"><span class="q-title" data-lbl-residuo-desc>Descrição da não conformidade neste resíduo <span class="req">*</span></span></div><textarea data-k="descricao" placeholder="Descreva o que foi identificado neste tipo de resíduo"></textarea><div class="err-msg">Campo obrigatório</div></div>';
+    '<div class="q" style="padding-bottom:2px;"><div class="q-head"><span class="q-title" data-lbl-residuo-desc>Descrição da não conformidade neste resíduo <span class="req">*</span></span></div><textarea data-k="descricao" placeholder="Descreva o que foi identificado neste tipo de resíduo"></textarea><div class="err-msg">Campo obrigatório</div></div>' +
+    '<div class="q" style="padding-bottom:2px;"><div class="q-head"><span class="q-title">Foto deste resíduo</span></div><label class="upload-btn">' +
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg> Adicionar foto<span class="photo-count" data-photo-count hidden></span>' +
+      '<input type="file" accept="image/*" multiple capture="environment" data-k="fotoInput"></label>' +
+      '<div class="thumbs" data-thumbs></div></div>';
   c.appendChild(el);
   updateResiduoDescLabels();
   return el;
@@ -715,11 +771,12 @@ function residuosList(){
     };
   }).filter(function(r){ return r.categoria || r.peso || r.descricao; });
 }
-$('#btnAddResiduo').addEventListener('click', function(){ var el = addResiduo(); this.blur(); el.scrollIntoView({behavior:'smooth', block:'nearest'}); });
+$('#btnAddResiduo').addEventListener('click', function(){ var el = addResiduo(); renderResiduoThumbs(el); this.blur(); el.scrollIntoView({behavior:'smooth', block:'nearest'}); });
 document.addEventListener('click', function(e){
   var b = e.target.closest('[data-remove-residuo]'); if(!b) return;
   var blk = b.closest('#residuoContainer > [data-id]'); if(!blk) return;
   if($('#residuoContainer').children.length <= 1){ toast('É necessário manter ao menos um tipo de resíduo.'); return; }
+  var id = blk.getAttribute('data-id'); delete S.residuoPhotos[id];
   blk.remove(); renumberResiduos();
 });
 
@@ -762,9 +819,9 @@ function fotografarEstado(){
     vals[key] = (el.type === 'radio' || el.type === 'checkbox') ? el.checked : el.value;
   });
   return {
-    versao: 1, salvoEm: Date.now(), tipo: S.tipo,
+    versao: 2, salvoEm: Date.now(), tipo: S.tipo,
     residuos: $$('#residuoContainer > [data-id]').map(function(b){ return b.getAttribute('data-id'); }),
-    vals: vals, fotos: S.photos
+    vals: vals, residuoPhotos: S.residuoPhotos
   };
 }
 function marcarSalvo(){
@@ -801,9 +858,7 @@ async function restaurarRascunho(){
     if(d.tipo){
       S.tipo = d.tipo;
       updateTipoUI();
-      $('#typeGate').hidden = true;
-      $('#formSections').hidden = false;
-      $('#anchorNav').hidden = false;
+      syncFormVisibility(true);
     }
     $('#residuoContainer').innerHTML = '';
     (d.residuos && d.residuos.length ? d.residuos : [null]).forEach(function(id){ addResiduo(id); });
@@ -813,8 +868,8 @@ async function restaurarRascunho(){
       else el.value = d.vals[key];
       if(el.tagName === 'SELECT') el.dispatchEvent(new Event('change'));
     });
-    S.photos = Array.isArray(d.fotos) ? d.fotos : [];
-    renderThumbs();
+    S.residuoPhotos = (d.residuoPhotos && typeof d.residuoPhotos === 'object') ? d.residuoPhotos : {};
+    renderAllResiduoThumbs();
   } finally { restaurando = false; }
   var h = new Date(d.salvoEm);
   toast('Rascunho recuperado (salvo às ' + String(h.getHours()).padStart(2,'0') + ':' + String(h.getMinutes()).padStart(2,'0') + ')');
@@ -884,10 +939,10 @@ $('#btnExportarPlanilha').addEventListener('click', async function(){
   try{
     try{ await capsReady; }catch(e){}
     if(!downloadsCap){ toast('Exportação indisponível nesta visualização.'); return; }
-    if(!dbCap){ toast('Indicador indisponível nesta visualização.'); return; }
-    if(!S.registros.length){ toast('Ainda não há registros para exportar.'); return; }
+    var fonte = dbCap ? S.registros : localHistoricoGet();
+    if(!fonte.length){ toast('Ainda não há registros para exportar.'); return; }
     if(!window.XLSX){ toast('Biblioteca de planilha não carregou. Recarregue a página.'); return; }
-    var rows = S.registros.map(function(r){
+    var rows = fonte.map(function(r){
       return {
         'Data de abertura': fmtDateBR(r.dataAbertura), 'Data de ocorrência/recebimento': fmtDateBR(r.dataOcorrencia),
         'Tipo': r.tipo || '', 'Nº': r.notificacao || '', 'Emissor': r.emissor || '', 'Gestor': r.gestor || '', 'Base/Planta': r.base || '',
@@ -908,7 +963,7 @@ $('#btnExportarPlanilha').addEventListener('click', async function(){
     var wbout = window.XLSX.write(wb, { type:'array', bookType:'xlsx' });
     var blob = new Blob([wbout], { type:'application/octet-stream' });
     await downloadsCap.save({ filename: 'indicador_nc_' + new Date().toISOString().slice(0,10) + '.xlsx', data: blob });
-    toast('Planilha exportada — guarde-a no repositório externo da equipe.');
+    toast(dbCap ? 'Planilha exportada — guarde-a no repositório externo da equipe.' : 'Planilha exportada com os registros deste dispositivo.');
   } catch(err){ console.error(err); toast('Não foi possível gerar a planilha.'); }
   finally{ btn.disabled = false; }
 });
@@ -1032,7 +1087,7 @@ function buildPayload(){
     residuos: residuosList().filter(function(r){ return r.categoria; }),
     defeito: v('#f-defeito'), severidade: radio('severidade'),
     reincidente: radio('reincidente'), acao: v('#f-acao'),
-    fotos: S.photos.slice(),
+    fotos: residuoPhotosPayload(),
     recusa: radio('recusa'), dataDisposicao: v('#f-dataDisposicao'), acaoCorretiva: v('#f-acaoCorretiva'),
     destinatarioNome: dest.nome, destinatarioEmail: dest.email
   };
@@ -1159,16 +1214,24 @@ async function saveFile(filename, blob){
 }
 async function registrarNoIndicador(payload){
   localRegistrosAdd(payload.tipo || 'Não Conformidade');
+  var doc = Object.assign({}, payload);
+  delete doc.fotos;
+  doc.createdAt = new Date().toISOString();
+  localHistoricoAdd(doc);
   if(!dbCap) return;
-  try{
-    var doc = Object.assign({}, payload);
-    delete doc.fotos;
-    doc.createdAt = new Date().toISOString();
-    await dbCap.collection('registros').add(doc);
-  }catch(e){ console.error(e); }
+  try{ await dbCap.collection('registros').add(doc); }catch(e){ console.error(e); }
 }
 
 /* ---------- ações finais ---------- */
+$('#btnFinalizarRegistro').addEventListener('click', function(){
+  if(!S.tipo){ toast('Escolha o tipo de registro primeiro.'); return; }
+  $('#finalizeStatus').textContent = '';
+  if(!validate()){ $('#finalizeStatus').textContent = 'Preencha os campos destacados antes de finalizar.'; return; }
+  $('#exportOptions').hidden = false;
+  $('#btnFinalizarRegistro').hidden = true;
+  toast('Registro finalizado. Escolha como exportar abaixo.');
+  $('#exportOptions').scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+});
 $('#btnBaixarPdf').addEventListener('click', async function(){
   if(!S.tipo){ toast('Escolha o tipo de registro primeiro.'); return; }
   if(!validate()){ setStatus('Preencha os campos destacados antes de baixar o PDF.'); return; }
@@ -1188,11 +1251,12 @@ $('#btnLimparForm').addEventListener('click', async function(){
   try{
     $('#residuoContainer').innerHTML = '';
     $('#ncForm').reset();
+    S.residuoPhotos = {};
     addResiduo();
-    S.photos = []; renderThumbs();
     $('#destAdd').classList.remove('show'); $('#manualEmailWrap').classList.remove('show'); $('#destHint').hidden = true;
     $('#mailtoBox').classList.remove('show');
     $('#reportFrame').hidden = true; $('#reportFrame').innerHTML = ''; previewShown = false; $('#btnPreview').textContent = 'Ver pré-visualização do relatório';
+    $('#exportOptions').hidden = true; $('#btnFinalizarRegistro').hidden = false; $('#finalizeStatus').textContent = '';
     clearInvalid(); $('#residuoErr').classList.remove('show'); setStatus('');
     var td = new Date();
     $('#f-dataAbertura').value = td.getFullYear()+'-'+String(td.getMonth()+1).padStart(2,'0')+'-'+String(td.getDate()).padStart(2,'0');
@@ -1267,6 +1331,7 @@ document.addEventListener('input', function(e){ if(e.target.classList && e.targe
 document.addEventListener('change', function(e){
   if(e.target.name){ var g = $$('input[name="'+e.target.name+'"]')[0]; var seg = g && g.closest('.seg'); if(seg) seg.classList.remove('invalid'); }
   if(e.target.id === 'f-destinatario' && e.target.value) e.target.classList.remove('invalid');
+  if(e.target.matches && e.target.matches('input[data-k="categoria"]')){ var blk = e.target.closest('[data-id]'); if(blk) renderResiduoThumbs(blk); }
 });
 
 })();
